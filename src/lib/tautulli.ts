@@ -1,56 +1,9 @@
 import dotenv from "dotenv";
+import fetch from 'node-fetch';
+
 dotenv.config()
 
 const API_BASE = `${process.env.TAUTILLI_API_BASE}/api/v2`
-
-import fetch from 'node-fetch';
-
-import { UploadPayload } from "./simkl.js";
-
-interface HistoryPayload {
-  response: {
-    result: string,
-    message: string | null,
-    data: {
-      recordsFiltered: number,
-      recordsTotal: number,
-      data: {
-        reference_id: number,
-        row_id: number,
-        id: number,
-        date: number,
-        started: number,
-        stopped: number,
-        duration: number,
-        title: string,
-        media_index: number,
-        grandparent_title: string,
-        parent_title: string,
-        parent_media_index: number,
-        paused_counter: number,
-        rating_key: number,
-        parent_rating_key: number,
-        grandparent_rating_key: number,
-        media_type: 'movie' | 'episode',
-        percent_complete: number,
-      }[],
-      draw: number,
-      filter_duration: string,
-      total_duration: string;
-    }
-  }
-}
-
-interface MetadataPayload {
-  response: {
-    result: string,
-    message: string | null,
-    data: {
-      guids: string[]
-      grandparent_guids: string[]
-    }
-  }
-}
 
 function getDate(numericDate: number) {
   const d = new Date(numericDate * 1000);

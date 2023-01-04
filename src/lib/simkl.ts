@@ -4,50 +4,9 @@ dotenv.config()
 import fs from 'fs';
 import fetch from 'node-fetch';
 
-interface AuthPayload {
-  result: string;
-  device_code: number;
-  user_code: string;
-  verification_url: string;
-  expires_in: number;
-  interval: number;
-}
-
-interface CheckinSuccessPayload {
-  result: 'OK'
-  access_token: string
-}
-
-interface CheckinWaitPayload {
-  result: 'KO'
-  message: string;
-}
-
-type CheckinPayload = CheckinSuccessPayload | CheckinWaitPayload
-
-
-interface UploadEntry {
-  title?: string,
-  watched_at?: string,
-  ids: Record<string, number | string>,
-  seasons?: {
-    watched_at?: string,
-    number: number,
-    episodes: {
-      number: number,
-      watched_at?: string,
-    }[]
-  }[]
-}
-
-export interface UploadPayload {
-  [key: string]: UploadEntry[]
-}
-
 
 const AUTH_TOKEN_FILE_PATH = './auth.json'
 
-// https://api.simkl.com/oauth/pin?client_id=***&redirect=http%3A%2F%2Fyourdomain.com%2Fwelcome
 async function getAuthCode() {
   const apiUrl =
     "https://api.simkl.com/oauth/pin?" +

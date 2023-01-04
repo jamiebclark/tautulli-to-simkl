@@ -40,7 +40,6 @@ PLEX_USER=username_example
 
 # The Simkl App client ID 
 SIMKL_CLIENT_ID=XXXXXXXXXXXXXXXXX
-SIMKL_OAUTH_REDIRECT=urn:ietf:wg:oauth:2.0:oob
 ```
 
 # Using the the application
