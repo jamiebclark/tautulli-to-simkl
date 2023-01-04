@@ -46,9 +46,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import dotenv from "dotenv";
+import fetch from 'node-fetch';
 dotenv.config();
 var API_BASE = "".concat(process.env.TAUTILLI_API_BASE, "/api/v2");
-import fetch from 'node-fetch';
 function getDate(numericDate) {
     var d = new Date(numericDate * 1000);
     return [d.getFullYear(), '-', d.getMonth() + 1, '-', d.getDate(), ' ', d.getHours(), ':', d.getMinutes(), ':', d.getSeconds()].map(function (x) {
@@ -59,7 +59,7 @@ function getDate(numericDate) {
     }).join('');
 }
 export function getApiCmd(cmd, params) {
-    var q = __assign({ apikey: process.env.TAUTILLI_API_KEY, user: process.env.TAUTILLI_USER, cmd: cmd }, params);
+    var q = __assign({ apikey: process.env.TAUTILLI_API_KEY, user: process.env.PLEX_USER, cmd: cmd }, params);
     return API_BASE + "?" + new URLSearchParams(Object.keys(q).map(function (key) { return [key, q[key]]; })).toString();
 }
 function formatGuids(guidsList) {
@@ -76,6 +76,7 @@ export function getHistory(before, updatePayload) {
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
+                    console.log('Fetching Tautulli history. This may take a few passes');
                     params = {};
                     if (before) {
                         params.before = before;

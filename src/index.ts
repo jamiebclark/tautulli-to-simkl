@@ -10,15 +10,16 @@ const OUTPUT_PATH = './output.json';
 async function run() {
   console.log('Syncing Tautulli with Simkl')
 
-  console.log('Fetching history')
+  console.log('Fetching Tautulli history. This may take a few passes')
   const history = await getHistory();
   console.log('Fetching history complete')
 
   console.log('Uploading history')
   const response = await updateHistory(history)
   const data = (await response.json()) as Record<string, any>
-
+  console.log()
   console.log('Upload complete');
+  console.log()
   console.log(`Output saved to ${OUTPUT_PATH}`)
 
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(data, null, 2), "utf-8")
@@ -29,7 +30,6 @@ async function run() {
         console.log(`Added ${data.added[key]} ${key}`)
       }
     })
-    console.log()
   }
 
   if (data.not_found) {
@@ -37,7 +37,6 @@ async function run() {
       .filter((key) => data.not_found[key].length)
       .forEach((key) => {
         console.log(`Could not find ${data.not_found[key].length} ${key}`)
-        console.log(key.toUpperCase());
       })
   }
 

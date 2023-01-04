@@ -35,35 +35,50 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import dotenv from "dotenv";
+import fs from 'fs';
 import { updateHistory } from "./lib/simkl.js";
 import { getHistory } from "./lib/tautulli.js";
 dotenv.config();
+var OUTPUT_PATH = './output.json';
 function run() {
     return __awaiter(this, void 0, void 0, function () {
         var history, response, data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getHistory()];
+                case 0:
+                    console.log('Syncing Tautulli with Simkl');
+                    console.log('Fetching history');
+                    return [4 /*yield*/, getHistory()];
                 case 1:
                     history = _a.sent();
+                    console.log('Fetching history complete');
+                    console.log('Uploading history');
                     return [4 /*yield*/, updateHistory(history)];
                 case 2:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
                 case 3:
                     data = (_a.sent());
-                    console.log(data);
+                    console.log('Upload complete');
+                    console.log("Output saved to ".concat(OUTPUT_PATH));
+                    fs.writeFileSync(OUTPUT_PATH, JSON.stringify(data, null, 2), "utf-8");
+                    if (data.added) {
+                        Object.keys(data.added).forEach(function (key) {
+                            if (data.added[key]) {
+                                console.log("Added ".concat(data.added[key], " ").concat(key));
+                            }
+                        });
+                        console.log();
+                    }
                     if (data.not_found) {
-                        console.log('Not Found:');
                         Object.keys(data.not_found)
                             .filter(function (key) { return data.not_found[key].length; })
                             .forEach(function (key) {
+                            console.log("Could not find ".concat(data.not_found[key].length, " ").concat(key));
                             console.log(key.toUpperCase());
-                            data.not_found[key].forEach(function (item) {
-                                console.log(item);
-                            });
                         });
                     }
+                    console.log('Sync complete');
                     return [2 /*return*/];
             }
         });

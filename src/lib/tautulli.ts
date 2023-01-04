@@ -37,11 +37,10 @@ function formatGuids(guidsList: string[]): Record<string, string | number> {
 }
 
 export async function getHistory(before?: string, updatePayload: UploadPayload = { movies: [], episodes: [] }): Promise<UploadPayload> {
-  console.log('Fetching Tautulli history. This may take a few passes')
   const params: Record<string, any> = {};
   if (before) {
     params.before = before;
-    console.log('Looking before: ', before)
+    console.log('Fetching history before: ', before)
   }
 
   const url = getApiCmd('get_history', params);

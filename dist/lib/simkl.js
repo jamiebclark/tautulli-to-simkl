@@ -39,7 +39,6 @@ dotenv.config();
 import fs from 'fs';
 import fetch from 'node-fetch';
 var AUTH_TOKEN_FILE_PATH = './auth.json';
-// https://api.simkl.com/oauth/pin?client_id=***&redirect=http%3A%2F%2Fyourdomain.com%2Fwelcome
 function getAuthCode() {
     return __awaiter(this, void 0, void 0, function () {
         var apiUrl;
@@ -72,7 +71,10 @@ export function getAuthToken() {
                                 return [4 /*yield*/, response.json()];
                             case 2:
                                 authPayload = (_a.sent());
-                                console.log("To authorize, visit: ".concat(authPayload.verification_url, " and enter the code ").concat(authPayload.user_code));
+                                console.clear();
+                                console.log('Authorization required');
+                                console.log("To authorize, visit: ".concat(authPayload.verification_url, " (Ctrl-click to launch in your browser) and enter the code: ").concat(authPayload.user_code));
+                                console.log('This script will update automatically');
                                 timer = 0;
                                 intervalTimer = authPayload.interval * 1000;
                                 intervalExpires = authPayload.expires_in * 1000;
@@ -87,12 +89,14 @@ export function getAuthToken() {
                                             case 2:
                                                 checkinPayload = (_a.sent());
                                                 if (checkinPayload.result === 'OK') {
+                                                    console.log('Authorization complete. Saving authorization token so we can skip this next time.');
                                                     fs.writeFileSync(AUTH_TOKEN_FILE_PATH, JSON.stringify(checkinPayload), "utf-8");
                                                     resolve(checkinPayload.access_token);
                                                     clearInterval(interval);
                                                 }
                                                 timer += intervalTimer;
                                                 if (timer >= intervalExpires) {
+                                                    console.log('Authorization timed out. Please restart the script.');
                                                     reject('Timeout');
                                                 }
                                                 return [2 /*return*/];
