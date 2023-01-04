@@ -56,9 +56,10 @@ export async function getHistory(before?: string, updatePayload: UploadPayload =
   let earliestDate: number;
 
   for (let entry of results) {
-    if (entry.percent_complete <= 90) {
+    if (entry.percent_complete <= 90 || !['movie', 'episode'].includes(entry.media_type)) {
       continue;
     }
+
     const mediaKey = entry.media_type === 'movie' ? 'movies' : 'episodes';
     const entryResponse = await fetch(getApiCmd('get_metadata', { rating_key: entry.rating_key }))
     const entryData = (await entryResponse.json()) as MetadataPayload
