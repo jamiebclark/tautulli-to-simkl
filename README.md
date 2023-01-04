@@ -3,6 +3,17 @@ This is a NodeJS script you can run locally in order to copy your Plex history (
 
 # Installation
 
+## Basic Tools
+
+### NodeJS
+ [Install NodeJS](https://nodejs.org/en/download/)
+
+### Yarn
+In your terminal, run:
+```
+npm install --global yarn
+```
+
 ## Simkl
 
 ### Create an account
@@ -26,7 +37,7 @@ yarn install
 ```
 
 ### Environment variables
-Create a `.env` file in the root of your directory. Start with the `.env.template` file:
+Create a `.env` file in the root of your directory. You can use `.env.template` as the basis for your file:
 
 ```
 # The base path to your Tautulli installation
